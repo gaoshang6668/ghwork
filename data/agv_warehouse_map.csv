@@ -1,0 +1,7 @@
+﻿node_id,node_type,x,y,neighbor_nodes
+N0,warehouse_out,2,2,"N1,N5"
+N1,path,3,2,"N0,N2"
+N2,path,4,2,"N1,N3"
+N3,path,5,2,"N2,N4"
+N10,workstation,10,12,"N9,N11"
+N20,workstation,22,14,"N19,N21"
