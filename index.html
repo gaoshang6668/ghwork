@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>仓储物料管理系统</title>
+    <style>
+*{box-sizing:border-box;font-family:Microsoft Yahei;}
+body{padding:20px;margin:0;background:#f4f7fa;}
+.box{background:#fff;padding:20px;border-radius:8px;margin-bottom:20px;box-shadow:0 1px 4px #00000018;}
+table{width:100%;border-collapse:collapse;}
+th,td{border:1px solid #ddd;padding:8px 12px;text-align:center;}
+th{background:#2b7bba;color:white;}
+button{padding:6px 12px;border:none;border-radius:4px;background:#2b7bba;color:#fff;cursor:pointer;margin:2px;}
+button.red{background:#dc3545;}
+input{padding:6px;width:120px;margin:0 4px;}
+</style>
+</head>
+<body>
+<h1>仓储物料管理系统</h1>
+
+<div class="box">
+    <h3>物料列表</h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>物料名称</th>
+            <th>安全库存</th>
+            <th>当前库存</th>
+            <th>操作</th>
+        </tr>
+        {%for m in materials%}
+        <tr>
+            <td>{{m.id}}</td>
+            <td>{{m.material_name}}</td>
+            <td>{{m.safe_stock}}</td>
+            <td>{{m.current_stock}}</td>
+            <td>
+                <input type="number" id="q_{{m.id}}" value="10">
+                <button onclick="stockIn({{m.id}})">入库</button>
+                <button class="red" onclick="stockOut({{m.id}})">出库</button>
+            </td>
+        </tr>
+        {%endfor%}
+    </table>
+</div>
+
+<script>
+async function stockIn(mid){
+    let q = document.getElementById("q_"+mid).value;
+    let fd=new FormData();
+    fd.append("material_id",mid);
+    fd.append("op_type","in");
+    fd.append("qty",parseInt(q));
+    await fetch("/stock_io",{method:"POST",body:fd});
+    location.reload();
+}
+async function stockOut(mid){
+    let q = document.getElementById("q_"+mid).value;
+    let fd=new FormData();
+    fd.append("material_id",mid);
+    fd.append("op_type","out");
+    fd.append("qty",parseInt(q));
+    await fetch("/stock_io",{method:"POST",body:fd});
+    location.reload();
+}
+</script>
+</body>
+</html>
